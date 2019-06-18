@@ -1,0 +1,3878 @@
+{
+	"info": {
+		"_postman_id": "934f537e-4431-42b7-a02a-ce9f96840cb7",
+		"name": "Webex Teams API",
+		"description": "Hey there! Thanks for checking out Cisco Webex for Developers. If you've used Cisco Webex Meetings or Cisco Webex Teams (formerly Cisco Spark) you know how easy it is to meet and collaborate with your team members and customers.\r\n\r\nThe Webex for Developers program opens up the power behind the Webex platform to anyone seeking to extend the Webex experience.\r\n\r\nWebex Meetings is a powerful conferencing solution that lets you connect with anyone, anywhere, in real time. By combining video, audio and content sharing, Webex Meetings creates an effective conferencing environment, leading to more productive meetings and increased productivity. Developer information for Webex Meetings will soon be available on this site. In the meantime, to get started with developing for Webex Meetings, please see the Getting Started guides over on Cisco DevNet. Keep reading for information about Webex Teams.\r\n\r\nWebex Teams makes staying in sync with your teammates and customers easy.\r\nConversations in Webex Teams take place in virtual meeting rooms. Some rooms live for a few hours while others become permanent fixtures of your team's workflow with titles like Daily Standup or Build Status. Webex Teams allows conversations to flow seamlessly between messages, video calls, and real-time whiteboarding sessions. No other solution brings together so many facets of collaboration into a single unified platform.\r\n\r\nhttps://developer.webex.com/getting-started.html",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Memberships",
+			"item": [
+				{
+					"name": "List memberships (for all rooms)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"List rooms: failed\"] = false;",
+									"}",
+									"else {",
+									"    tests[\"List rooms: success\"] = true;",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/memberships",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"memberships"
+							]
+						},
+						"description": "Lists all room memberships. By default, lists memberships for rooms to which the authenticated user belongs.\n\nUse query parameters to filter the response.\n\nUse roomId to list memberships for a room, by ID.\n\nUse either personId or personEmail to filter the results.\n\nhttps://developer.webex.com/endpoint-memberships-get.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a room (for test run purpose)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Create a room: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Create a room: created\"] = true",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Create a room: cannot retreive room identifier\"] = false",
+									"    }",
+									"    else {",
+									"        var roomID = jsonData.id;",
+									"        postman.setEnvironmentVariable(\"_room\", roomID);",
+									"        tests[\"Create a room: created with id:\" + roomID] = true",
+									"    }",
+									"}",
+									"    ",
+									"    ",
+									"    ",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Postman - Testing Memberships\"\n}"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/rooms",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"rooms"
+							]
+						},
+						"description": "Creates a room. The authenticated user is automatically added as a member of the room. See the Memberships API to learn how to add more people to the room.\n\nhttps://developer.webex.com/endpoint-rooms-post.html"
+					},
+					"response": []
+				},
+				{
+					"name": "List memberships (for a room)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"List rooms: failed\"] = false;",
+									"}",
+									"else {",
+									"    tests[\"List rooms: success\"] = true;",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/memberships?roomId={{_room}}&max=100",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"memberships"
+							],
+							"query": [
+								{
+									"key": "roomId",
+									"value": "{{_room}}"
+								},
+								{
+									"key": "max",
+									"value": "100"
+								}
+							]
+						},
+						"description": "Lists all room memberships. By default, lists memberships for rooms to which the authenticated user belongs.\n\nUse query parameters to filter the response.\n\nUse roomId to list memberships for a room, by ID.\n\nUse either personId or personEmail to filter the results.\n\nhttps://developer.webex.com/endpoint-memberships-get.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a membership",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Create a membership: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Create a membership: created\"] = true",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Create a membership: cannot retreive identifier\"] = false",
+									"    }",
+									"    else {",
+									"        var membershipID = jsonData.id;",
+									"        postman.setEnvironmentVariable(\"_membership\", membershipID);",
+									"        tests[\"Create a membership: created with id:\" + membershipID] = true",
+									"    }",
+									"}",
+									"    ",
+									"    ",
+									"    ",
+									"    ",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"roomId\" : \"{{_room}}\",\r\n  \"personEmail\": \"CiscoDevNet@sparkbot.io\",\r\n  \"isModerator\": \"false\"\r\n}"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/memberships",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"memberships"
+							]
+						},
+						"description": "Add someone to a room by Person ID or email address; optionally making them a moderator.\n\nhttps://developer.webex.com/endpoint-memberships-post.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Get membership details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Get membership details: failed\"] = false;",
+									"}",
+									"else {",
+									"    tests[\"Get membership details: success\"] = true;",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Get membership details: cannot retreive identifier\"] = false;",
+									"    }",
+									"    else {",
+									"        var membershipID = jsonData.id;",
+									"        if (membershipID != postman.getEnvironmentVariable(\"_membership\")) {",
+									"            tests[\"Get membership details: wrong id:\" + membershipID] = false;",
+									"        }",
+									"        else {",
+									"            tests[\"Get membership details: correct id:\" + membershipID] = true;",
+									"        }",
+									"    }",
+									"}",
+									"    ",
+									"    "
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/memberships/{{_membership}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"memberships",
+								"{{_membership}}"
+							]
+						},
+						"description": "Get details for a membership by ID.\r\n\r\nSpecify the membership ID in the membershipId URI parameter.\r\n\r\nhttps://developer.webex.com/endpoint-memberships-membershipId-get.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Update a membership",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Update a membership: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Update a membership: success\"] = true",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"isModerator\": true\n}"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/memberships/{{_membership}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"memberships",
+								"{{_membership}}"
+							]
+						},
+						"description": "Updates properties for a membership by ID.\n\nSpecify the membership ID in the membershipId URI parameter.\n\nhttps://developer.ciscospark.com/endpoint-memberships-membershipId-put.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete membership",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 204) {",
+									"    tests[\"Delete a membership: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Delete a membership: success\"] = true",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/memberships/{{_membership}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"memberships",
+								"{{_membership}}"
+							]
+						},
+						"description": "Deletes a membership by ID.\r\n\r\nSpecify the membership ID in the membershipId URI parameter.\r\n\r\nhttps://developer.webex.com/endpoint-memberships-membershipId-delete.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a room (cleanup)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 204) {",
+									"    tests[\"Delete a room: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Delete a room: success\"] = true",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/rooms/{{_room}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"rooms",
+								"{{_room}}"
+							]
+						},
+						"description": "Deletes a room, by ID.\r\n\r\nSpecify the room ID in the roomId parameter in the URI.\r\n\r\nhttps://developer.webex.com/endpoint-rooms-roomId-delete.html"
+					},
+					"response": []
+				}
+			],
+			"description": "Memberships represent a person's relationship to a room. Use this API to list members of any room that you're in or create memberships to invite someone to a room. Memberships can also be updated to make someone a moderator or deleted to remove them from the room.\r\n\r\nJust like in the Webex Teams app, you must be a member of the room in order to list its memberships or invite people.\r\n\r\nhttps://developer.webex.com/resource-memberships.html",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "2cc3d2c1-27c3-4005-a00f-5f8125079a60",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "d344b3c6-5b68-45b7-953c-d465116e5ad6",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Messages",
+			"item": [
+				{
+					"name": "Create a room (for test run purpose)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Create a room: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Create a room: created\"] = true",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Create a room: cannot retreive identifier\"] = false",
+									"    }",
+									"    else {",
+									"        var roomID = jsonData.id;",
+									"        postman.setEnvironmentVariable(\"_room\", roomID);",
+									"        tests[\"Create a room: created with id:\" + roomID] = true",
+									"    }",
+									"}",
+									"    ",
+									"    ",
+									"    ",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Postman - Testing Messages\"\n}"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/rooms",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"rooms"
+							]
+						},
+						"description": "Creates a room. The authenticated user is automatically added as a member of the room. See the Memberships API to learn how to add more people to the room.\n\nhttps://developer.webex.com/endpoint-rooms-post.html"
+					},
+					"response": []
+				},
+				{
+					"name": "List messages",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"List messages: failed\"] = false;",
+									"}",
+									"else {",
+									"    tests[\"List messages: success\"] = true;",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/messages?roomId={{_room}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"messages"
+							],
+							"query": [
+								{
+									"key": "roomId",
+									"value": "{{_room}}"
+								}
+							]
+						},
+						"description": "Lists all messages in a room. If present, includes the associated media content attachment for each message.\r\n\r\nThe list sorts the messages in descending order by creation date.\r\n\r\nhttps://developer.webex.com/endpoint-messages-get.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a message (plain text)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Create a message: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Create a message: created\"] = true",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Create a message: cannot retreive identifier\"] = false",
+									"    }",
+									"    else {",
+									"        var messageID = jsonData.id;",
+									"        postman.setEnvironmentVariable(\"_message\", messageID);",
+									"        tests[\"Create a message: created with id:\" + messageID] = true",
+									"    }",
+									"}",
+									"    ",
+									"    ",
+									"    ",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"roomId\" : \"{{_room}}\",\r\n  \"text\" : \"hi from Postman\"\r\n}"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/messages",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"messages"
+							]
+						},
+						"description": "Posts a plain text or markdown message, and optionally, a media content attachment, to a room.\n\nhttps://developer.webex.com/endpoint-messages-post.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a message (plain text as form-data)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Create a message: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Create a message: created\"] = true",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Create a message: cannot retreive identifier\"] = false",
+									"    }",
+									"    else {",
+									"        var messageID = jsonData.id;",
+									"        postman.setEnvironmentVariable(\"_message\", messageID);",
+									"        tests[\"Create a message: created with id:\" + messageID] = true",
+									"    }",
+									"}",
+									"    ",
+									"    ",
+									"    ",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "roomId",
+									"value": "{{_room}}",
+									"type": "text"
+								},
+								{
+									"key": "text",
+									"value": "This is a plain text message, sent as form-data",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/messages",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"messages"
+							]
+						},
+						"description": "Posts a plain text or markdown message, and optionally, a media content attachment, to a room.\n\nhttps://developer.webex.com/endpoint-messages-post.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a message (plain text as form-urlencoded)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Create a message: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Create a message: created\"] = true",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Create a message: cannot retreive identifier\"] = false",
+									"    }",
+									"    else {",
+									"        var messageID = jsonData.id;",
+									"        postman.setEnvironmentVariable(\"_message\", messageID);",
+									"        tests[\"Create a message: created with id:\" + messageID] = true",
+									"    }",
+									"}",
+									"    ",
+									"    ",
+									"    ",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "roomId",
+									"value": "{{_room}}",
+									"type": "text"
+								},
+								{
+									"key": "text",
+									"value": "This is a plain text message, sent via form-urlencoded",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/messages",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"messages"
+							]
+						},
+						"description": "Posts a plain text or markdown message, and optionally, a media content attachment, to a room.\n\nhttps://developer.webex.com/endpoint-messages-post.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a message (markdown)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Create a message: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Create a message: created\"] = true",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Create a message: cannot retreive identifier\"] = false",
+									"    }",
+									"    else {",
+									"        var messageID = jsonData.id;",
+									"        postman.setEnvironmentVariable(\"_message\", messageID);",
+									"        tests[\"Create a message: created with id:\" + messageID] = true",
+									"    }",
+									"}",
+									"    ",
+									"    ",
+									"    ",
+									"    ",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"roomId\" : \"{{_room}}\",\r\n  \"markdown\" : \"# Message Formatting!\\nWebex Teams clients now render rich text; enabling bots and integrations to communicate business data in a way that's fun to read and easy on the eyes!\\n\\n## Styling Text\\nMessages are styled using [Markdown](https://daringfireball.net/projects/markdown/syntax) syntax allowing text to be emphasized in **bold**, *italics* on `in-line code`.\\n\\n### Fenced Code Blocks\\nWebex can now also render fenced code blocks using triple backticks (aka GitHub Flavored Markdown)\\n\\n```\\nsource 'https://github.com/CocoaPods/Specs.git'\\nplatform :ios, '8.0'\\nuse_frameworks!\\n\\npost_install do |installer|\\n  installer.pods_project.targets.each do |target|\\n    target.build_configurations.each do |config|\\n      config.build_settings['ENABLE_BITCODE'] = 'NO'\\n    end\\n  end\\nend\\n\\ntarget 'TeamsBnB' do\\n  pod 'TeamsSDK', :path => '../'\\n  pod 'Toast-Swift', '~> 1.1.0'\\nend\\n```\\n\\n### Lists\\n\\nLists are a great way to organize information or present options to your audience.\\n\\n###Ordered Lists\\n1. List Item\\n2. List Item\\n3. List Item\\n\\n###Unordered Lists\\n* List Item\\n* List Item\\n* List Item\\n     * Sub Item\\n         * SubSub Item\\n\\n### Block Quotes\\n\\n> Quoting is a super powerful way for bots to respond to a message that happened a while back in the conversation.\\n\\n\",\r\n  \"text\": \"This text would be displayed by Webex Teams clients that do not support markdown.\"\r\n}"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/messages",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"messages"
+							]
+						},
+						"description": "Posts a plain text or markdown message, and optionally, a media content attachment, to a room.\n\nTo get more info about message formatting, check https://developer.webex.com/formatting-messages.html\n\nhttps://developer.webex.com/endpoint-messages-post.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a message (with mention)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Create a message: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Create a message: created\"] = true",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Create a message: cannot retreive identifier\"] = false",
+									"    }",
+									"    else {",
+									"        var messageID = jsonData.id;",
+									"        postman.setEnvironmentVariable(\"_message\", messageID);",
+									"        tests[\"Create a message: created with id:\" + messageID] = true",
+									"    }",
+									"}",
+									"    ",
+									"    ",
+									"    ",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"roomId\" : \"{{_room}}\",\r\n  \"markdown\" : \"Hi <@personEmail:CiscoDevNet@sparkbot.io|CiscoDevNet>, your order has been processed.\"\r\n}"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/messages",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"messages"
+							]
+						},
+						"description": "Posts a plain text or markdown message, and optionally, a media content attachment, to a room.\n\nhttps://developer.ciscospark.com/endpoint-messages-post.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a message (7439 characters limit)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Create a message: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Create a message: created\"] = true",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Create a message: cannot retreive identifier\"] = false",
+									"    }",
+									"    else {",
+									"        var messageID = jsonData.id;",
+									"        postman.setEnvironmentVariable(\"_message\", messageID);",
+									"        tests[\"Create a message: created with id:\" + messageID] = true",
+									"    }",
+									"}",
+									"    ",
+									"    ",
+									"    ",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"roomId\": \"{{_room}}\",\n  \"markdown\": \"ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"\n}"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/messages",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"messages"
+							]
+						},
+						"description": "Posts a plain text or markdown message, and optionally, a media content attachment, to a room.\n\nhttps://developer.webex.com/endpoint-messages-post.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a message (2479 asian characters)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Create a message: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Create a message: created\"] = true",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Create a message: cannot retreive identifier\"] = false",
+									"    }",
+									"    else {",
+									"        var messageID = jsonData.id;",
+									"        postman.setEnvironmentVariable(\"_message\", messageID);",
+									"        tests[\"Create a message: created with id:\" + messageID] = true",
+									"    }",
+									"}",
+									"    ",
+									"    ",
+									"    ",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"roomId\" : \"{{_room}}\",\r\n  \"markdown\" : \"漢字漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは漢字漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは漢字漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは漢字漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語を漢字で送りますこんにちは日本語\"\r\n}"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/messages",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"messages"
+							]
+						},
+						"description": "Posts a plain text or markdown message, and optionally, a media content attachment, to a room.\n\nhttps://developer.webex.com/endpoint-messages-post.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a message (html)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Create a message: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Create a message: created\"] = true",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Create a message: cannot retreive identifier\"] = false",
+									"    }",
+									"    else {",
+									"        var messageID = jsonData.id;",
+									"        postman.setEnvironmentVariable(\"_message\", messageID);",
+									"        tests[\"Create a message: created with id:\" + messageID] = true",
+									"    }",
+									"}",
+									"    ",
+									"    ",
+									"    ",
+									"    ",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"roomId\" : \"{{_room}}\",\r\n  \"html\" : \"<p>Well as you know, HTML is not officially supported! Let's try it though ;-)</p><h1>Message Formatting!</h1><p>Webex Teams clients now render rich text; enabling bots and integrations to communicate business data in a way that's fun to read and easy on the eyes!</p><h2>Styling Text</h2><p>Messages are styled using <a href=\\\"https://daringfireball.net/projects/markdown/syntax\\\" rel=\\\"nofollow\\\">Markdown</a> syntax allowing text to be emphasized in <strong>bold</strong>, <em>italics</em> on <code>in-line code</code>.</p><h3>Fenced Code Blocks</h3><p>Webex Teams clients can now also render fenced code blocks using triple backticks (aka GitHub Flavored Markdown)</p><pre><code>source 'https://github.com/CocoaPods/Specs.git'\\nplatform :ios, '8.0'\\nuse_frameworks!\\n\\npost_install do |installer|\\n  installer.pods_project.targets.each do |target|\\n    target.build_configurations.each do |config|\\n      config.build_settings['ENABLE_BITCODE'] = 'NO'\\n    end\\n  end\\nend\\n\\ntarget 'TeamsBnB' do\\n  pod 'TeamsSDK', :path =&gt; '../'\\n  pod 'Toast-Swift', '~&gt; 1.1.0'\\nend</code></pre><h3>Lists</h3><p>Lists are a great way to organize information or present options to your audience.</p><p>Orderd Lists</p><ol><li>List Item</li><li>List Item</li><li>List Item</li></ol><p>Unordered Lists</p><ul><li>List Item</li><li>List Item</li><li>List Item</li></ul><h3>Block Quotes</h3><blockquote><p>Quoting is a super powerful way for bots to respond to a message that happened a while back in the conversation.</p></blockquote><p><h3>Horizontal Lines</h3>well, as others, it's not officially supported, but pretty handy ;-)<hr></p>\",\r\n  \"text\": \"This text would be displayed by Webex Teams clients that do not support Markdown.\"\r\n}"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/messages",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"messages"
+							]
+						},
+						"description": "HTML is not officially supported by the API, but will work in some cases\n\nTo get more info about message formatting, check https://developer.ciscospark.com/formatting-messages.html\n\nhttps://developer.webex.com/endpoint-messages-post.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a message (file attachment)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Create a message: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Create a message: created\"] = true",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Create a message: cannot retreive identifier\"] = false",
+									"    }",
+									"    else {",
+									"        var messageID = jsonData.id;",
+									"        postman.setEnvironmentVariable(\"_message\", messageID);",
+									"        tests[\"Create a message: created with id:\" + messageID] = true",
+									"    }",
+									"}",
+									"    ",
+									"    ",
+									"    ",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"roomId\" : \"{{_room}}\",\r\n  \"text\" : \"Learn Webex API with DevNet\",\r\n  \"files\" : [ \"https://cdn-images-1.medium.com/max/1000/1*_Iz0gkpIJ8KxxR5Jk0XJjQ.png\" ]\r\n}"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/messages",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"messages"
+							]
+						},
+						"description": "Posts a plain text or markdown message, and optionally, a media content attachment, to a room.\n\nhttps://developer.webex.com/endpoint-messages-post.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a message (local file attachement)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Create a message: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Create a message: created\"] = true",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Create a message: cannot retreive identifier\"] = false",
+									"    }",
+									"    else {",
+									"        var messageID = jsonData.id;",
+									"        postman.setEnvironmentVariable(\"_message\", messageID);",
+									"        tests[\"Create a message: created with id:\" + messageID] = true",
+									"    }",
+									"}",
+									"    ",
+									"    ",
+									"    ",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "roomId",
+									"value": "{{_room}}",
+									"type": "text"
+								},
+								{
+									"key": "text",
+									"value": "This is a message with file attachment",
+									"type": "text"
+								},
+								{
+									"key": "files",
+									"type": "file",
+									"src": ""
+								}
+							]
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/messages",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"messages"
+							]
+						},
+						"description": "Posts a plain text or markdown message, and optionally, a media content attachment, to a room.\n\nhttps://developer.webex.com/endpoint-messages-post.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a message (card attachment - simple)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7a208cb5-241a-451c-8e9e-dbcfc6072854",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Create a message (card attachment - simple): failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Create a message (card attachment - simple): created\"] = true",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Create a message (card attachment - simple): cannot retreive identifier\"] = false",
+									"    }",
+									"    else {",
+									"        var messageID = jsonData.id;",
+									"        postman.setEnvironmentVariable(\"_message\", messageID);",
+									"        tests[\"Create a message (card attachment - simple): created with id:\" + messageID] = true",
+									"    }",
+									"}",
+									"    ",
+									"    ",
+									"    ",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"roomId\": \"{{_room}}\",\n    \"markdown\": \"[Learn more](https://adaptivecards.io) about Adaptive Cards.\",\n    \"attachments\": [\n      {\n        \"contentType\": \"application/vnd.microsoft.card.adaptive\",\n        \"content\": {\n          \"type\": \"AdaptiveCard\",\n          \"version\": \"1.0\",\n          \"backgroundImage\": \"http://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Background-Dark.jpg\",\n          \"body\": [\n            {\n              \"type\": \"TextBlock\",\n              \"text\": \"Adaptive Cards\",\n              \"size\": \"large\"\n            }\n          ],\n          \"actions\": [\n            {\n              \"type\": \"Action.OpenUrl\",\n              \"url\": \"http://adaptivecards.io\",\n              \"title\": \"Learn More\"\n            }\n          ]\n        }\n      }\n    ]\n  }"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/messages",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"messages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a message (card attachment - complex)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6a990d38-31d5-4d13-be18-4a26df15c6c0",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Create a message (card attachment - complex): failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Create a message (card attachment - complex): created\"] = true",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Create a message (card attachment - complex): cannot retreive identifier\"] = false",
+									"    }",
+									"    else {",
+									"        var messageID = jsonData.id;",
+									"        postman.setEnvironmentVariable(\"_message\", messageID);",
+									"        tests[\"Create a message (card attachment - complex): created with id:\" + messageID] = true",
+									"    }",
+									"}",
+									"    ",
+									"    ",
+									"    ",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"roomId\": \"{{_room}}\",\n    \"markdown\": \"[Learn more](https://adaptivecards.io) about Adaptive Cards.\",\n    \"attachments\": [\n      {\n        \"contentType\": \"application/vnd.microsoft.card.adaptive\",\n        \"content\": {\n          \"type\": \"AdaptiveCard\",\n          \"version\": \"1.0\",\n          \"backgroundImage\": \"http://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Background-Dark.jpg\",\n          \"body\": [\n                {\n                    \"type\": \"ColumnSet\",\n                    \"columns\": [\n                        {\n                            \"type\": \"Column\",\n                            \"width\": \"35\",\n                            \"items\": [\n                                {\n                                    \"type\": \"Image\",\n                                    \"url\": \"http://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png\",\n                                    \"size\": \"stretch\"\n                                }\n                            ]\n                        },\n                        {\n                            \"type\": \"Column\",\n                            \"width\": \"65\",\n                            \"items\": [\n                                {\n                                    \"type\": \"TextBlock\",\n                                    \"text\": \"Monday April 1\",\n                                    \"weight\": \"bolder\",\n                                    \"size\": \"large\",\n                                    \"color\": \"light\"\n                                },\n                                {\n                                    \"type\": \"TextBlock\",\n                                    \"text\": \"63 / 42\",\n                                    \"size\": \"medium\",\n                                    \"spacing\": \"none\"\n                                },\n                                {\n                                    \"type\": \"TextBlock\",\n                                    \"isSubtle\": true,\n                                    \"text\": \"20% chance of rain\",\n                                    \"spacing\": \"none\"\n                                },\n                                {\n                                    \"type\": \"TextBlock\",\n                                    \"isSubtle\": true,\n                                    \"text\": \"Winds 5 mph NE\",\n                                    \"spacing\": \"none\"\n                                }\n                            ]\n                        }\n                    ]\n                },\n                {\n                    \"type\": \"ColumnSet\",\n                    \"columns\": [\n                {\n                \"type\": \"Column\",\n                \"width\": \"20\",\n                \"items\": [\n                    {\n                    \"type\": \"TextBlock\",\n                    \"horizontalAlignment\": \"center\",\n                    \"wrap\": false,\n                    \"text\": \"Fri\"\n                    },\n                    {\n                    \"type\": \"Image\",\n                    \"size\": \"auto\",\n                    \"url\": \"http://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png\"\n                    },\n                    {\n                    \"type\": \"TextBlock\",\n                    \"horizontalAlignment\": \"center\",\n                    \"wrap\": false,\n                    \"text\": \"62\"\n                    },\n                    {\n                    \"type\": \"TextBlock\",\n                    \"horizontalAlignment\": \"center\",\n                    \"isSubtle\": true,\n                    \"wrap\": false,\n                    \"text\": \"52\",\n                    \"spacing\": \"none\"\n                    }\n                ],\n                \"selectAction\": {\n                    \"type\": \"Action.OpenUrl\",\n                    \"title\": \"View Friday\",\n                    \"url\": \"http://www.microsoft.com\"\n                }\n                },\n                {\n                \"type\": \"Column\",\n                \"width\": \"20\",\n                \"items\": [\n                    {\n                    \"type\": \"TextBlock\",\n                    \"horizontalAlignment\": \"center\",\n                    \"wrap\": false,\n                    \"text\": \"Sat\"\n                    },\n                    {\n                    \"type\": \"Image\",\n                    \"size\": \"auto\",\n                    \"url\": \"http://messagecardplayground.azurewebsites.net/assets/Drizzle-Square.png\"\n                    },\n                    {\n                    \"type\": \"TextBlock\",\n                    \"horizontalAlignment\": \"center\",\n                    \"wrap\": false,\n                    \"text\": \"60\"\n                    },\n                    {\n                    \"type\": \"TextBlock\",\n                    \"horizontalAlignment\": \"center\",\n                    \"isSubtle\": true,\n                    \"wrap\": false,\n                    \"text\": \"48\",\n                    \"spacing\": \"none\"\n                    }\n                ],\n                \"selectAction\": {\n                    \"type\": \"Action.OpenUrl\",\n                    \"title\": \"View Saturday\",\n                    \"url\": \"http://www.microsoft.com\"\n                }\n                },\n                {\n                \"type\": \"Column\",\n                \"width\": \"20\",\n                \"items\": [\n                    {\n                    \"type\": \"TextBlock\",\n                    \"horizontalAlignment\": \"center\",\n                    \"wrap\": false,\n                    \"text\": \"Sun\"\n                    },\n                    {\n                    \"type\": \"Image\",\n                    \"size\": \"auto\",\n                    \"url\": \"http://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png\"\n                    },\n                    {\n                    \"type\": \"TextBlock\",\n                    \"horizontalAlignment\": \"center\",\n                    \"wrap\": false,\n                    \"text\": \"59\"\n                    },\n                    {\n                    \"type\": \"TextBlock\",\n                    \"horizontalAlignment\": \"center\",\n                    \"isSubtle\": true,\n                    \"wrap\": false,\n                    \"text\": \"49\",\n                    \"spacing\": \"none\"\n                    }\n                ],\n                \"selectAction\": {\n                    \"type\": \"Action.OpenUrl\",\n                    \"title\": \"View Sunday\",\n                    \"url\": \"http://www.microsoft.com\"\n                }\n                },\n                {\n                \"type\": \"Column\",\n                \"width\": \"20\",\n                \"items\": [\n                    {\n                    \"type\": \"TextBlock\",\n                    \"horizontalAlignment\": \"center\",\n                    \"wrap\": false,\n                    \"text\": \"Mon\"\n                    },\n                    {\n                    \"type\": \"Image\",\n                    \"size\": \"auto\",\n                    \"url\": \"http://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png\"\n                    },\n                    {\n                    \"type\": \"TextBlock\",\n                    \"horizontalAlignment\": \"center\",\n                    \"wrap\": false,\n                    \"text\": \"64\"\n                    },\n                    {\n                    \"type\": \"TextBlock\",\n                    \"horizontalAlignment\": \"center\",\n                    \"isSubtle\": true,\n                    \"wrap\": false,\n                    \"text\": \"51\",\n                    \"spacing\": \"none\"\n                    }\n                ],\n                \"selectAction\": {\n                    \"type\": \"Action.OpenUrl\",\n                    \"title\": \"View Monday\",\n                    \"url\": \"http://www.microsoft.com\"\n                }\n                }\n                    ]\n                }\n            ]\n        }\n      }\n    ]\n  }"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/messages",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"messages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get message details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Get message details: failed\"] = false;",
+									"}",
+									"else {",
+									"    tests[\"Get message details: success\"] = true;",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Get message details: cannot retreive identifier\"] = false;",
+									"    }",
+									"    else {",
+									"        var messageID = jsonData.id;",
+									"        if (messageID != postman.getEnvironmentVariable(\"_message\")) {",
+									"            tests[\"Get message details: wrong id:\" + messageID] = false;",
+									"        }",
+									"        else {",
+									"            tests[\"Get message details: correct id:\" + messageID] = true;",
+									"        }",
+									"    }",
+									"}",
+									"    ",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/messages/{{_message}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"messages",
+								"{{_message}}"
+							]
+						},
+						"description": "Shows details for a message, by message ID.\n\nSpecify the message ID in the messageId parameter in the URI.\n\nhttps://developer.webex.com/endpoint-messages-messageId-get.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a message",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 204) {",
+									"    tests[\"Delete a message: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Delete a message: success\"] = true",
+									"}",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/messages/{{_message}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"messages",
+								"{{_message}}"
+							]
+						},
+						"description": "Deletes a message, by message ID.\n\nSpecify the message ID in the messageId parameter in the URI.\n\nhttps://developer.webex.com/endpoint-messages-messageId-delete.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a room (cleanup)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 204) {",
+									"    tests[\"Delete a room: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Delete a room: success\"] = true",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/rooms/{{_room}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"rooms",
+								"{{_room}}"
+							]
+						},
+						"description": "Deletes a room, by ID.\r\n\r\nSpecify the room ID in the roomId parameter in the URI.\r\n\r\nhttps://developer.webex.com/endpoint-rooms-roomId-delete.html"
+					},
+					"response": []
+				}
+			],
+			"description": "Messages are how we communicate in a room. In Webex Teams, each message is displayed on its own line along with a timestamp and sender information. Use this API to list, create, and delete messages.\r\n\r\nMessage can contain plain text, rich text, and a file attachment.\r\n\r\nJust like in the Webex Teams app, you must be a member of the room in order to target it with this API.\r\n\r\nhttps://developer.webex.com/resource-messages.html",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "3af8d6cb-87a5-4d01-8f01-07a2ab92d236",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "87afc694-bb34-4ac1-8848-7ee4c5942395",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "People",
+			"item": [
+				{
+					"name": "List people (whose name starts with)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"List people: failed\"] = false;",
+									"}",
+									"else {",
+									"    tests[\"List people: success\"] = true;",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/people?displayName=Ste",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"people"
+							],
+							"query": [
+								{
+									"key": "displayName",
+									"value": "Ste"
+								}
+							]
+						},
+						"description": "List people in your organization.\n\nhttps://developer.webex.com/endpoint-people-get.html"
+					},
+					"response": []
+				},
+				{
+					"name": "List people (with exact email)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"List people: failed\"] = false;",
+									"}",
+									"else {",
+									"    tests[\"List people: success\"] = true;",
+									"    ",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.items === undefined) {",
+									"        tests[\"List people: cannot retreive result\"] = false",
+									"    }",
+									"    else {",
+									"        var personID = jsonData.items[0].id;",
+									"        postman.setEnvironmentVariable(\"_person\", personID);",
+									"        tests[\"List people: retreived with id:\" + personID] = true",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/people?email=toEnglish@sparkbot.io",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"people"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "toEnglish@sparkbot.io"
+								}
+							]
+						},
+						"description": "List people in your organization.\n\nhttps://developer.webex.com/endpoint-people-get.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Get person details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Get person details: failed\"] = false;",
+									"}",
+									"else {",
+									"    tests[\"Get person details: success\"] = true;",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Get person details: cannot retreive person identifier\"] = false;",
+									"    }",
+									"    else {",
+									"        var personID = jsonData.id;",
+									"        if (personID != postman.getEnvironmentVariable(\"_person\")) {",
+									"            tests[\"Get person details: wrong id:\" + personID] = false;",
+									"        }",
+									"        else {",
+									"            tests[\"Get person details: correct id:\" + personID] = true;",
+									"        }",
+									"    }",
+									"}",
+									"    ",
+									"    "
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/people/{{_person}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"people",
+								"{{_person}}"
+							]
+						},
+						"description": "Shows details for a person, by ID.\r\n\r\nSpecify the person ID in the personId parameter in the URI.\r\n\r\nhttps://developer.webex.com/endpoint-people-personId-get.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Get person details (me)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Get person details: failed\"] = false;",
+									"}",
+									"else {",
+									"    tests[\"Get person details: success\"] = true;",
+									"}",
+									"    ",
+									"    "
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/people/me",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"people",
+								"me"
+							]
+						},
+						"description": "Show the profile for the authenticated user.\n\nhttps://developer.webex.com/endpoint-people-me-get.html"
+					},
+					"response": []
+				}
+			],
+			"description": "People are registered users of Webex Teams. Searching and viewing People requires an auth token with a scope of spark:people_read. Viewing the list of all People in your Organization requires an administrator auth token with spark-admin:people_read scope. Adding, updating, and removing People requires an administrator auth token with the spark-admin:people_write scope.\r\n\r\nTo learn more about managing people in a room see the Memberships API. For information about how to allocate Hybrid Services licenses to people, see the Managing Hybrid Services guide.\r\n\r\nhttps://developer.webex.com/resource-people.html",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "31ca6cec-fa5e-445c-a0ea-cce55b417369",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "47e69d59-1906-418b-a2a2-3dc1a332e80c",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Rooms",
+			"item": [
+				{
+					"name": "List rooms",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"List rooms: failed\"] = false;",
+									"}",
+									"else {",
+									"    tests[\"List rooms: success\"] = true;",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/rooms",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"rooms"
+							]
+						},
+						"description": "List rooms.\r\n\r\nBy default, lists rooms to which the authenticated user belongs.\r\n\r\nhttps://developer.webex.com/endpoint-rooms-get.html"
+					},
+					"response": []
+				},
+				{
+					"name": "List rooms (direct)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"List rooms: failed\"] = false;",
+									"}",
+									"else {",
+									"    tests[\"List rooms: success\"] = true;",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/rooms?type=direct&sortBy=lastactivity&max=10",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"rooms"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "direct"
+								},
+								{
+									"key": "sortBy",
+									"value": "lastactivity"
+								},
+								{
+									"key": "max",
+									"value": "10"
+								}
+							]
+						},
+						"description": "List rooms.\r\n\r\nBy default, lists rooms to which the authenticated user belongs.\r\n\r\nhttps://developer.webex.com/endpoint-rooms-get.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a room",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Create a room: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Create a room: created\"] = true",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Create a room: cannot retreive room identifier\"] = false",
+									"    }",
+									"    else {",
+									"        var roomID = jsonData.id;",
+									"        postman.setEnvironmentVariable(\"_room\", roomID);",
+									"        tests[\"Create a room: created with id:\" + roomID] = true",
+									"    }",
+									"}",
+									"    ",
+									"    ",
+									"    ",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Postman - Testing Rooms\"\n}"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/rooms",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"rooms"
+							]
+						},
+						"description": "Creates a room. The authenticated user is automatically added as a member of the room. See the Memberships API to learn how to add more people to the room.\n\nhttps://developer.webex.com/endpoint-rooms-post.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Get room details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Get room details: failed\"] = false;",
+									"}",
+									"else {",
+									"    tests[\"Get room details: success\"] = true;",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Get room details: cannot retreive room identifier\"] = false;",
+									"    }",
+									"    else {",
+									"        var roomId = jsonData.id;",
+									"        if (roomId != postman.getEnvironmentVariable(\"_room\")) {",
+									"            tests[\"Get room details: wrong id:\" + roomId] = false;",
+									"        }",
+									"        else {",
+									"            tests[\"Get room details: correct id:\" + roomId] = true;",
+									"        }",
+									"    }",
+									"}",
+									"    ",
+									"    "
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/rooms/{{_room}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"rooms",
+								"{{_room}}"
+							]
+						},
+						"description": "Shows details for a room, by ID.\r\n\r\nSpecify the room ID in the roomId parameter in the URI.\r\n\r\nhttps://developer.webex.com/endpoint-rooms-roomId-get.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Update a room",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Update a room: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Update a room: success\"] = true",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Cisco Live - Let's meet in the DevNet Zone\"\n}"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/rooms/{{_room}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"rooms",
+								"{{_room}}"
+							]
+						},
+						"description": "Updates details for a room, by ID.\r\n\r\nSpecify the room ID in the roomId parameter in the URI.\r\n\r\nhttps://developer.webex.com/endpoint-rooms-roomId-put.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a room",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 204) {",
+									"    tests[\"Delete a room: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Delete a room: success\"] = true",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/rooms/{{_room}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"rooms",
+								"{{_room}}"
+							]
+						},
+						"description": "Deletes a room, by ID.\r\n\r\nSpecify the room ID in the roomId parameter in the URI.\r\n\r\nhttps://developer.webex.com/endpoint-rooms-roomId-delete.html"
+					},
+					"response": []
+				}
+			],
+			"description": "Rooms are virtual meeting places where people post messages and collaborate to get work done. This API is used to manage the rooms themselves. Rooms are created and deleted with this API. You can also update a room to change its title, for example.\r\n\r\nTo create a team room, specify the a teamId in POST payload. Note that once a room is added to a team, it cannot be moved. To learn more about managing teams, see the Teams API.\r\n\r\nTo manage people in a room see the Memberships API.\r\n\r\nTo post content see the Messages API.\r\n\r\nhttps://developer.webex.com/resource-rooms.html",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "46bf1a47-401f-4c0d-8a7f-d255bd3dfb5e",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "59a42ebb-0590-444a-8b68-a220d52e2613",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Team Memberships",
+			"item": [
+				{
+					"name": "Create a team (for test run purpose)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Create a team: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Create a team: created\"] = true",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Create a team: cannot retreive team identifier\"] = false",
+									"    }",
+									"    else {",
+									"        var teamID = jsonData.id;",
+									"        postman.setEnvironmentVariable(\"_team\", teamID);",
+									"        tests[\"Create a team: created with id:\" + teamID] = true",
+									"    }",
+									"}",
+									"    ",
+									"    ",
+									"    ",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Tour de France\"\n}"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/teams",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"teams"
+							]
+						},
+						"description": "Create a new team.\n\nhttps://developer.webex.com/endpoint-teams-post.html"
+					},
+					"response": []
+				},
+				{
+					"name": "List team memberships",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"List rooms: failed\"] = false;",
+									"}",
+									"else {",
+									"    tests[\"List rooms: success\"] = true;",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/team/memberships?teamId={{_team}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"team",
+								"memberships"
+							],
+							"query": [
+								{
+									"key": "teamId",
+									"value": "{{_team}}"
+								}
+							]
+						},
+						"description": "Lists all team memberships. By default, lists memberships for teams to which the authenticated user belongs.\r\n\r\nUse query parameters to filter the response.\r\n\r\nUse teamId to list memberships for a team, by ID.\r\n\r\nUse either personId or personEmail to filter the results.\r\n\r\nhttps://developer.webex.com/endpoint-teammemberships-get.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a team membership",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Create a membership: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Create a membership: created\"] = true",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Create a membership: cannot retreive identifier\"] = false",
+									"    }",
+									"    else {",
+									"        var membershipID = jsonData.id;",
+									"        postman.setEnvironmentVariable(\"_membership\", membershipID);",
+									"        tests[\"Create a membership: created with id:\" + membershipID] = true",
+									"    }",
+									"}",
+									"    ",
+									"    ",
+									"    ",
+									"    ",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"teamId\" : \"{{_team}}\",\r\n  \"personEmail\": \"steve.sfartz@gmail.com\",\r\n  \"isModerator\": \"false\"\r\n}"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/team/memberships",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"team",
+								"memberships"
+							]
+						},
+						"description": "Add someone to a team by Person ID or email address; optionally making them a moderator.\n\nhttps://developer.webex.com/endpoint-teammemberships-post.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Get team membership details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Get membership details: failed\"] = false;",
+									"}",
+									"else {",
+									"    tests[\"Get membership details: success\"] = true;",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Get membership details: cannot retreive identifier\"] = false;",
+									"    }",
+									"    else {",
+									"        var membershipID = jsonData.id;",
+									"        if (membershipID != postman.getEnvironmentVariable(\"_membership\")) {",
+									"            tests[\"Get membership details: wrong id:\" + membershipID] = false;",
+									"        }",
+									"        else {",
+									"            tests[\"Get membership details: correct id:\" + membershipID] = true;",
+									"        }",
+									"    }",
+									"}",
+									"    ",
+									"    "
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/team/memberships/{{_membership}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"team",
+								"memberships",
+								"{{_membership}}"
+							]
+						},
+						"description": "Get details for a membership by ID.\r\n\r\nSpecify the membership ID in the membershipId URI parameter.\r\n\r\nhttps://developer.webex.com/endpoint-teammemberships-membershipId-get.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Update a team membership",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Update a membership: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Update a membership: success\"] = true",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"isModerator\": true\n}"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/team/memberships/{{_membership}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"team",
+								"memberships",
+								"{{_membership}}"
+							]
+						},
+						"description": "Updates properties for a membership by ID.\n\nSpecify the membership ID in the membershipId URI parameter.\n\nhttps://developer.webex.com/endpoint-teammemberships-membershipId-put.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a team membership",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 204) {",
+									"    tests[\"Delete a membership: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Delete a membership: success\"] = true",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/team/memberships/{{_membership}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"team",
+								"memberships",
+								"{{_membership}}"
+							]
+						},
+						"description": "Deletes a membership by ID.\r\n\r\nSpecify the membership ID in the membershipId URI parameter.\r\n\r\nhttps://developer.webex.com/endpoint-teammemberships-membershipId-delete.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a team (cleanup)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 204) {",
+									"    tests[\"Delete a team: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Delete a team: success\"] = true",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/teams/{{_team}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"teams",
+								"{{_team}}"
+							]
+						},
+						"description": "Delete a team.\n\nhttps://developer.webex.com/endpoint-teams-teamId-delete.html"
+					},
+					"response": []
+				}
+			],
+			"description": "Team Memberships represent a person's relationship to a team. Use this API to list members of any team that you're in or create memberships to invite someone to a team. Team memberships can also be updated to make someone a moderator or deleted to remove them from the team.\r\n\r\nJust like in the Webex Teams app, you must be a member of the team in order to list its memberships or invite people..\r\n\r\nhttps://developer.webex.com/resource-team-memberships.html",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "0ba927fe-1baf-4939-8f91-56b395862b43",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "0555fb9f-e4fd-4714-ab59-b4ea55d6d7a7",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Teams",
+			"item": [
+				{
+					"name": "List teams",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"List teams: failed\"] = false;",
+									"}",
+									"else {",
+									"    tests[\"List teams: success\"] = true;",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/teams",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"teams"
+							]
+						},
+						"description": "List teams.\n\nhttps://developer.webex.com/endpoint-teams-get.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a team",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Create a team: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Create a team: created\"] = true",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Create a team: cannot retreive team identifier\"] = false",
+									"    }",
+									"    else {",
+									"        var teamID = jsonData.id;",
+									"        postman.setEnvironmentVariable(\"_team\", teamID);",
+									"        tests[\"Create a team: created with id:\" + teamID] = true",
+									"    }",
+									"}",
+									"    ",
+									"    ",
+									"    ",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"European Football Championship\"\n}"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/teams",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"teams"
+							]
+						},
+						"description": "Create a new team.\n\nhttps://developer.webex.com/endpoint-teams-post.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Get team details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Get team details: failed\"] = false;",
+									"}",
+									"else {",
+									"    tests[\"Get team details: success\"] = true;",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Get team details: cannot retreive team identifier\"] = false;",
+									"    }",
+									"    else {",
+									"        var teamID = jsonData.id;",
+									"        if (teamID != postman.getEnvironmentVariable(\"_team\")) {",
+									"            tests[\"Get team details: wrong id:\" + teamID] = false;",
+									"        }",
+									"        else {",
+									"            tests[\"Get team details: correct id:\" + teamID] = true;",
+									"        }",
+									"    }",
+									"}",
+									"    ",
+									"    "
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/teams/{{_team}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"teams",
+								"{{_team}}"
+							]
+						},
+						"description": "Show details for a team.\n\nhttps://developer.webex.com/endpoint-teams-teamId-get.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Update a team",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Update a team: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Update a team: success\"] = true",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"European Football Championship 2018\"\n}"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/teams/{{_team}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"teams",
+								"{{_team}}"
+							]
+						},
+						"description": "Update a team.\n\nhttps://developer.webex.com/endpoint-teams-teamId-put.html"
+					},
+					"response": []
+				},
+				{
+					"name": "List Team rooms",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"List rooms: failed\"] = false;",
+									"}",
+									"else {",
+									"    tests[\"List rooms: success\"] = true;",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/rooms?teamId={{_team}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"rooms"
+							],
+							"query": [
+								{
+									"key": "teamId",
+									"value": "{{_team}}"
+								}
+							]
+						},
+						"description": "List rooms.\r\n\r\nBy default, lists rooms to which the authenticated user belongs.\r\n\r\nhttps://developer.webex.com/endpoint-rooms-get.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a Team room",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Create a room: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Create a room: created\"] = true",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Create a room: cannot retreive room identifier\"] = false",
+									"    }",
+									"    else {",
+									"        var roomID = jsonData.id;",
+									"        postman.setEnvironmentVariable(\"_room\", roomID);",
+									"        tests[\"Create a room: created with id:\" + roomID] = true",
+									"    }",
+									"}",
+									"    ",
+									"    ",
+									"    ",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Postman - Testing Teams\",\n    \"teamId\": \"{{_team}}\"\n}"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/rooms",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"rooms"
+							]
+						},
+						"description": "Creates a room. The authenticated user is automatically added as a member of the room. See the Memberships API to learn how to add more people to the room.\n\nhttps://developer.webex.com/endpoint-rooms-post.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Team room details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Get room details: failed\"] = false;",
+									"}",
+									"else {",
+									"    tests[\"Get room details: success\"] = true;",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Get room details: cannot retreive room identifier\"] = false;",
+									"    }",
+									"    else {",
+									"        var roomId = jsonData.id;",
+									"        if (roomId != postman.getEnvironmentVariable(\"_room\")) {",
+									"            tests[\"Get room details: wrong id:\" + roomId] = false;",
+									"        }",
+									"        else {",
+									"            tests[\"Get room details: correct id:\" + roomId] = true;",
+									"        }",
+									"    }",
+									"}",
+									"    ",
+									"    "
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/rooms/{{_room}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"rooms",
+								"{{_room}}"
+							]
+						},
+						"description": "Shows details for a room, by ID.\r\n\r\nSpecify the room ID in the roomId parameter in the URI.\r\n\r\nhttps://developer.webex.com/endpoint-rooms-roomId-get.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Update a Team room",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Update a room: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Update a room: success\"] = true",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Cisco Live - Let's meet in the DevNet Zone\", \n    \"isLocked\": false\n}"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/rooms/{{_room}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"rooms",
+								"{{_room}}"
+							]
+						},
+						"description": "Updates details for a room, by ID.\r\n\r\nSpecify the room ID in the roomId parameter in the URI.\r\n\r\nhttps://developer.webex.com/endpoint-rooms-roomId-put.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Team room",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 204) {",
+									"    tests[\"Delete a room: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Delete a room: success\"] = true",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/rooms/{{_room}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"rooms",
+								"{{_room}}"
+							]
+						},
+						"description": "Deletes a room, by ID.\r\n\r\nSpecify the room ID in the roomId parameter in the URI.\r\n\r\nhttps://developer.webex.com/endpoint-rooms-roomId-delete.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a team ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 204) {",
+									"    tests[\"Delete a team: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Delete a team: success\"] = true",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/teams/{{_team}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"teams",
+								"{{_team}}"
+							]
+						},
+						"description": "Delete a team.\n\nhttps://developer.webex.com/endpoint-teams-teamId-delete.html"
+					},
+					"response": []
+				}
+			],
+			"description": "Teams are groups of people with a set of rooms that are visible to all members of that team. This API is used to manage the teams themselves. Teams are created and deleted with this API. You can also update a team to change its name, for example.\r\n\r\nTo manage people in a team see the Team Memberships API.\r\n\r\nTo manage team rooms see the Rooms API.\r\n\r\nhttps://developer.webex.com/resource-teams.html",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "ddbc4cd8-0716-459d-8bf9-ab19a6fc117d",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "b72acc1c-a92f-4c7a-8e2e-7605396532c4",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "WebHooks",
+			"item": [
+				{
+					"name": "List webhooks",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/webhooks",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"webhooks"
+							]
+						},
+						"description": "Lists all of your webhooks.\n\nhttps://developer.webex.com/endpoint-webhooks-get.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a webhook (all events, all rooms)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Create a webhook: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Create a webhook: created\"] = true",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Create a webhook: cannot retreive webhook identifier\"] = false",
+									"    }",
+									"    else {",
+									"        var webhookID = jsonData.id;",
+									"        postman.setEnvironmentVariable(\"_webhook\", webhookID);",
+									"        tests[\"Create a webhook: created with id:\" + webhookID] = true",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"name\": \"Webhook to Requestb.in (all events, no filter)\",\n      \"resource\": \"all\",\n      \"event\": \"all\",\n      \"targetUrl\": \"https://requestbin.herokuapp.com/13f99fq1\"\n    }"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/webhooks",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"webhooks"
+							]
+						},
+						"description": "Creates a webhook for messages/created event.\n\nNote that you'll need to change the requestb.in URI to your own to see the webhook in action.\n\nhttps://developer.webex.com/endpoint-webhooks-post.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Get webhook details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Get webhook details: failed\"] = false;",
+									"}",
+									"else {",
+									"    tests[\"Get webhook details: success\"] = true;",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Get webhook details: cannot retreive webhook identifier\"] = false;",
+									"    }",
+									"    else {",
+									"        var webhookID = jsonData.id;",
+									"        if (webhookID != postman.getEnvironmentVariable(\"_webhook\")) {",
+									"            tests[\"Get webhook details: wrong id:\" + webhookID] = false;",
+									"        }",
+									"        else {",
+									"            tests[\"Get webhook details: correct id:\" + webhookID] = true;",
+									"        }",
+									"    }",
+									"}",
+									"    ",
+									"    "
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/webhooks/{{_webhook}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"webhooks",
+								"{{_webhook}}"
+							]
+						},
+						"description": "Shows details for a webhook, by ID.\r\n\r\nSpecify the webhook ID in the webhookId parameter in the URI.\r\n\r\nhttps://developer.webex.com/endpoint-webhooks-webhookId-get.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a webhook",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/webhooks/{{_webhook}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"webhooks",
+								"{{_webhook}}"
+							]
+						},
+						"description": "Deletes a webhook, by ID.\r\n\r\nSpecify the webhook ID in the webhookId parameter in the URI.\r\n\r\nhttps://developer.webex.com/endpoint-webhooks-delete.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a room (for test run purpose)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Create a room: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Create a room: created\"] = true",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Create a room: cannot retreive room identifier\"] = false",
+									"    }",
+									"    else {",
+									"        var roomID = jsonData.id;",
+									"        postman.setEnvironmentVariable(\"_room\", roomID);",
+									"        tests[\"Create a room: created with id:\" + roomID] = true",
+									"    }",
+									"}",
+									"    ",
+									"    ",
+									"    ",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Postman - Testing Webhooks\"\n}"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/rooms",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"rooms"
+							]
+						},
+						"description": "Creates a room. The authenticated user is automatically added as a member of the room. See the Memberships API to learn how to add more people to the room.\n\nhttps://developer.webex.com/endpoint-rooms-post.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a webhook (messages/created)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Create a webhook: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Create a webhook: created\"] = true",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Create a webhook: cannot retreive webhook identifier\"] = false",
+									"    }",
+									"    else {",
+									"        var webhookID = jsonData.id;",
+									"        postman.setEnvironmentVariable(\"_webhook\", webhookID);",
+									"        tests[\"Create a webhook: created with id:\" + webhookID] = true",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n      \"name\": \"Postman WebHook Test\",\n      \"resource\": \"messages\",\n      \"event\": \"created\",\n      \"targetUrl\": \"http://requestb.in/pq8idjpq\",\n      \"filter\": \"roomId={{_room}}\"\n    }"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/webhooks/",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"webhooks",
+								""
+							]
+						},
+						"description": "Creates a webhook for messages/created event.\n\nNote that you'll need to change the requestb.in URI to your own to see the webhook in action.\n\nhttps://developer.webex.com/endpoint-webhooks-post.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Get webhook details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Get webhook details: failed\"] = false;",
+									"}",
+									"else {",
+									"    tests[\"Get webhook details: success\"] = true;",
+									"",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    if (jsonData.id === undefined) {",
+									"        tests[\"Get webhook details: cannot retreive webhook identifier\"] = false;",
+									"    }",
+									"    else {",
+									"        var webhookID = jsonData.id;",
+									"        if (webhookID != postman.getEnvironmentVariable(\"_webhook\")) {",
+									"            tests[\"Get webhook details: wrong id:\" + webhookID] = false;",
+									"        }",
+									"        else {",
+									"            tests[\"Get webhook details: correct id:\" + webhookID] = true;",
+									"        }",
+									"    }",
+									"}",
+									"    ",
+									"    "
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/webhooks/{{_webhook}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"webhooks",
+								"{{_webhook}}"
+							]
+						},
+						"description": "Shows details for a webhook, by ID.\r\n\r\nSpecify the webhook ID in the webhookId parameter in the URI.\r\n\r\nhttps://developer.webex.com/endpoint-webhooks-webhookId-get.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Update a webhook",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 200) {",
+									"    tests[\"Update a webhook: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Update a webhook: success\"] = true",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Postman WebHook Test (renamed)\",\n    \"targetUrl\": \"http://requestb.in/pq8idjpq\"\n}"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/webhooks/{{_webhook}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"webhooks",
+								"{{_webhook}}"
+							]
+						},
+						"description": "Updates a webhook, by ID.\r\n\r\nSpecify the webhook ID in the webhookId parameter in the URI.\r\n\r\nhttps://developer.webex.com/endpoint-webhooks-webhookId-put.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Add a message (for test run purpose)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"",
+									"    ",
+									"    ",
+									"    ",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"roomId\" : \"{{_room}}\",\r\n  \"text\" : \"This is a plain text message to read from the webhook\"\r\n}"
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/messages",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"messages"
+							]
+						},
+						"description": "adds a message in a room, to check an event is triggered"
+					},
+					"response": []
+				},
+				{
+					"name": "Check requestb.in (test purpose)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://requestbin.herokuapp.com/13f99fq1?inspect",
+							"protocol": "https",
+							"host": [
+								"requestbin",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"13f99fq1"
+							],
+							"query": [
+								{
+									"key": "inspect",
+									"value": null
+								}
+							]
+						},
+						"description": "check an event has been posted"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a webhook",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/webhooks/{{_webhook}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"webhooks",
+								"{{_webhook}}"
+							]
+						},
+						"description": "Deletes a webhook, by ID.\r\n\r\nSpecify the webhook ID in the webhookId parameter in the URI.\r\n\r\nhttps://developer.webex.com/endpoint-webhooks-delete.html"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a room (cleanup)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"if (responseCode.code != 204) {",
+									"    tests[\"Delete a room: failed\"] = false",
+									"}",
+									"else {",
+									"    tests[\"Delete a room: success\"] = true",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://api.ciscospark.com/v1/rooms/{{_room}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"ciscospark",
+								"com"
+							],
+							"path": [
+								"v1",
+								"rooms",
+								"{{_room}}"
+							]
+						},
+						"description": "Deletes a room, by ID.\r\n\r\nSpecify the room ID in the roomId parameter in the URI.\r\n\r\nhttps://developer.webex.com/endpoint-rooms-roomId-delete.html"
+					},
+					"response": []
+				}
+			],
+			"description": "Webhooks allow your app to be notified via HTTP when a specific event occurs in Webex Teams. For example, your app can register a webhook to be notified when a new message is posted into a specific room.\r\n\r\nEvents trigger in near real-time allowing your app and backend IT systems to stay in sync with new content and room activity.\r\n\r\nCheck the Webhooks Guide and our blog regularly for announcements of additional webhook resources and event types.\r\n\r\nhttps://developer.webex.com/resource-webhooks.html",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "6a8c29b7-fafb-4cb3-ae75-c1047eeb15f1",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "59f62c86-0e4d-4203-97b2-133ff9c9ee56",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "46abc27d-2d4b-4ed4-b512-2815c272adf2",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "72153035-536a-4032-9953-ef5a9edde7d9",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
