@@ -3,7 +3,7 @@
 This repo gathers collections for the **[Webex Meetings XML API](https://developer.cisco.com/docs/webex-meetings/#!xml-api)**.
 
 - **[Webex Meetings XML (End user)](#webex-meetings-xml-enduser)**: Requests accessible by a non-admin Webex Meetings user
-- **[Webex Meetings XML (Admin)](#webex-meetings-xml-admin)**: Requests requring admin privileges
+<!-- - **[Webex Meetings XML (Admin)](#webex-meetings-xml-admin)**: Requests requring admin privileges -->
 
 If you're new to Postman, you're only a few steps away from getting the full benefits of the collections:
 
@@ -47,15 +47,18 @@ Enough talk, let's practice:
 
 <!-- Note that the collection is also rendered in HTML for [quick browsing via Postman Documenter](https://documenter.getpostman.com/view/30210/71CYsEp). -->
 
+<!-- 
 
 ## [webex-meetings-xml-admin](https://raw.githubusercontent.com/CiscoDevNet/postman-webex-meetings-xml/master/webex-meetings-xml-admin.json)
 
-<!-- [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/0aa22af74405f82086d4) -->
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/0aa22af74405f82086d4)
 
 This collection illustrates the XML API admin requests.
 
-<!-- Note that the collection is also rendered in HTML for [quick browsing via Postman Documenter](https://documenter.getpostman.com/view/30210/2PMC7h). -->
+Note that the collection is also rendered in HTML for [quick browsing via Postman Documenter](https://documenter.getpostman.com/view/30210/2PMC7h).
 
-<!-- ![admin-api](docs/img/admin-scripted-collection.png) -->
+![admin-api](docs/img/admin-scripted-collection.png)
+
+-->
 
 
