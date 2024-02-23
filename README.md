@@ -1,4 +1,5 @@
-# Postman collections for Webex Meetings XML API
+# DEPRECATED
+ **The Meetings-related XML APIs will be deprecated and the End-of-Support (EoS) date is planned for the second half of 2023. Cisco will continue to resolve bugs up to this date, but new features will only be implemented for the REST APIs suite. The End-of-life (EoL) timeframe for Meetings-related XML APIs is targeted for March 31, 2024, at which time the APIs will be retired. For information on how to migrate from XML to REST APIs, please see [Webex Meetings XML to REST Migration Guide](https://developer.cisco.com/docs/webex-meetings/#xml-to-rest-migration-guide). User management APIs such as CreateUser, SetUser, DelUser, etc. are NOT affected by this EOL announcement.**
 
 This repo gathers collections for the **[Webex Meetings XML API](https://developer.cisco.com/docs/webex-meetings/#!xml-api)**.
 
